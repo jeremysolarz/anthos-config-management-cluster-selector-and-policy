@@ -22,7 +22,7 @@ We will create a RoleBinding named `Auditor` that only applies to clusters withi
 * Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#download-as-part-of-the-google-cloud-sdk)
 * Install the [nomos CLI](https://cloud.google.com/anthos-config-management/downloads) for managing ACM across clusters
 * Create or select four [GKE Clusters](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-cluster) with the [ACM Operator installed](https://cloud.google.com/anthos-config-management/docs/how-to/installing)
-      * The configs in this repository assume the cluster names to be "belgium", "belgium-2", "iowa" and "taiwan".
+      * The configs in this repository assume the cluster names to be "frankfurt-dz", "muenster-dz" and "hannover-dz".
 
 ## Config Overview
 
@@ -31,23 +31,21 @@ This repository contains the following files.
 ```console
 locality-specific-policy/
 ├── setup/ # configuration for each cluster's ACM Operator
-│   ├── belgium.config-management.yaml
-│   ├── belgium-2.config-management.yaml
-│   ├── iowa.config-management.yaml
-|   └── taiwan.config-management.yaml
+│   ├── frankfurt-dz.config-management.yaml
+│   ├── muenster-dz.config-management.yaml
+│   └── hannover-dz.config-management.yaml
 └── config-root/ # directory ACM monitors for policy
    ├── README.md
    ├── system/
    ├── namespaces/
    ├── cluster/ # cluster scoped objects
-   │   ├──clusterrole.auditor.yaml  # uses location-belgium selector
+   │   ├──clusterrole.auditor.yaml  # uses location-frankfurt-dz selector
    |   └── clusterrolebinding.auditor.yaml
    └── clusterregistry/ # defines selectors and cluster labels
-       ├── cluster.belgium-2.yaml
-       ├── cluster.belgium.yaml
-       ├── cluster.iowa.yaml
-       ├── cluster.taiwan.yaml
-       ├── clusterregistry.select-location-belgium.yaml
+       ├── cluster.muenster-dz.yaml
+       ├── cluster.frankfurt-dz.yaml
+       ├── cluster.hannover-dz.yaml
+       ├── clusterregistry.select-location-frankfurt-dz.yaml
        └── clusterregistry.select-prod.yaml
 ```
 
@@ -76,11 +74,11 @@ To setup the clusters for this example you will need to:
 
 Each cluster's ACM operator must be configured to point to the config-root in locality-specific-policy/.
 
-The setup directory and cluster configs for this example assumed the names "belgium", "belgium-2", "iowa" and "taiwan".
+The setup directory and cluster configs for this example assumed the names "frankfurt-dz", "muenster-dz" and "hannover-dz".
 
 Each cluster has its own config in the [setup/] directory.
 
-If you are not using default names of "belgium", "belgium-2", "iowa" and "taiwan", update the cluster's names in the `spec.clusterName` field.
+If you are not using default names of "frankfurt-dz", "muenster-dz" and "hannover-dz", update the cluster's names in the `spec.clusterName` field.
 
 1. Update the files in [setup/](setup/) to include your cluster names and git username.
     For example, if your github username is `user@example.com`, change each YAML to include
@@ -89,7 +87,7 @@ If you are not using default names of "belgium", "belgium-2", "iowa" and "taiwan
       syncRepo: git@github.com:user@example.com/csp-config-management.git
     ```
 
-1. Sync the ACM Operator for both clusters by repeating the following steps for "belgium", "belgium-2", "iowa" and "taiwan" clusters.
+1. Sync the ACM Operator for both clusters by repeating the following steps for "frankfurt-dz", "muenster-dz" and "hannover-dz" clusters.
 
     ```console
     # Get kubeconfig credentials for your cluster
@@ -107,10 +105,9 @@ If you are not using default names of "belgium", "belgium-2", "iowa" and "taiwan
     Connecting to clusters...
     Context                                 Status           Last Synced Token
     -------                                 ------           -----------------
-    belgium-cluster-context                 SYNCED           <some commit hash>
-    belgium-2-cluster-context               SYNCED           <some commit hash>
-    iowa-cluster-context                    SYNCED           <some commit hash>
-    taiwan-cluster-context                  SYNCED           <some commit hash>
+    frankfurt-dz-cluster-context            SYNCED           <some commit hash>
+    muenster-dz-cluster-context             SYNCED           <some commit hash>
+    hannover-dz-cluster-context             SYNCED           <some commit hash>
     ```
 
 ### Update Cluster Configs
@@ -122,7 +119,7 @@ The `Cluster` configs are located in the [clusterregistry/](config-root/clusterr
 
 ACM uses the `metadata.name` field to determine where `ClusterSelectors` apply.
 
-If you are not using default names of "belgium", "belgium-2", "iowa" and "taiwan", update the cluster's names in the `metadata.name` field.  Then push your changes to git for them to be picked up by ACM.
+If you are not using default names of "frankfurt-dz", "muenster-dz" and "hannover-dz", update the cluster's names in the `metadata.name` field.  Then push your changes to git for them to be picked up by ACM.
 
 First, ensure your cluster configs are valid.
 ```console
@@ -138,7 +135,7 @@ $ git push origin master
 
 ## Define Policy as Config
 
-This config creates a `RoleBinding` named `auditor` that only applies to clusters that are labelled "belgium".
+This config creates a `RoleBinding` named `auditor` that only applies to clusters that are labelled "frankfurt-dz".
 
 ### ClusterSelectors and Cluster Configs
 
@@ -150,26 +147,26 @@ cluster's labels. [Read more about ClusterSelectors here.](https://cloud.google.
 
 `ClusterSelectors` and `Cluster` configs are stored in the [clusterregistry/](config-root/clusterregistry/) directory.
 
-Each `Cluster` config has a label that defines environment and location.  The `ClusterSelector` "[select-location-belgium](config-root/clusterregistry/clusterselector.select-location-belgium.yaml)" applies configs with the "location: belgium" label.
+Each `Cluster` config has a label that defines environment and location.  The `ClusterSelector` "[select-location-frankfurt-dz](config-root/clusterregistry/clusterselector.select-location-frankfurt-dz.yaml)" applies configs with the "location: frankfurt-dz" label.
 
 ### ClusterRole and ClusterRoleBinding
 
 `ClusterSelectors` are referenced in config to limit the clusters they are applied to.
 
-The `ClusterRole` "[auditor](config-root/cluster/clusterrole.auditor.yaml)"  references "select-location-belgium" in the `annotations.configmanagement.gke.io/cluster-selector` field.  The "auditor" role is created only in clusters with the "location: belgium" label. This will also apply to the  `ClusterRoleBinding` "[auditors](config-root/cluster/clusterrolebinding.auditor.yaml)".
+The `ClusterRole` "[auditor](config-root/cluster/clusterrole.auditor.yaml)"  references "select-location-frankfurt-dz" in the `annotations.configmanagement.gke.io/cluster-selector` field.  The "auditor" role is created only in clusters with the "location: frankfurt-dz" label. This will also apply to the  `ClusterRoleBinding` "[auditors](config-root/cluster/clusterrolebinding.auditor.yaml)".
 
 ## Observe Enforcement Across Clusters
 
 We are going to first verify that the "auditors" `ClusterRoleBinding` exists in
-clusters with a "location: belgium" label.
+clusters with a "location: frankfurt-dz" label.
 
-Repeat the following for both the "belgium" and "belgium-2" clusters.
+Repeat the following for both the "frankfurt-dz" and "muenster-dz" clusters.
 
-1. Ensure your kubectl context is pointing to a belgium cluster
+1. Ensure your kubectl context is pointing to a frankfurt-dz cluster
 
       ```console
       # update local kubeconfig to correct cluster
-      $ gcloud container clusters get-credentials <belgium or belgium-2 cluster name> --zone <cluster zone>
+      $ gcloud container clusters get-credentials <frankfurt-dz or muenster-dz cluster name> --zone <cluster zone>
       # ensure kubectl is using correct context
       $ kubectl config get-context
       ```
@@ -183,14 +180,13 @@ Repeat the following for both the "belgium" and "belgium-2" clusters.
       ```
 
 Next, let's verify that the "auditors" `ClusterRoleBinding` doesn't exist in
-clusters with different location labels. Repeat the following for both the "iowa"
-and "taiwan" clusters.
+clusters with different location labels. Repeat the following for the "hannover-dz" clusters.
 
 1. Ensure your kubectl context is pointing to correct cluster
 
       ```console
       # update local kubeconfig to correct cluster
-      $ gcloud container clusters get-credentials <taiwan or iowa cluster name> --zone <cluster zone>
+      $ gcloud container clusters get-credentials <hannover-dz cluster name> --zone <cluster zone>
       # ensure kubectl is using correct context
       $ kubectl config get-context
       ```
