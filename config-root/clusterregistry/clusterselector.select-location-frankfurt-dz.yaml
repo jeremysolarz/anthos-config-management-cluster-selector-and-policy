@@ -1,0 +1,9 @@
+# selects clusters with frankfurt-dz location label
+kind: ClusterSelector
+apiVersion: configmanagement.gke.io/v1
+metadata:
+  name: select-location-frankfurt-dz
+spec:
+  selector:
+    matchLabels:
+      location: frankfurt-dz
