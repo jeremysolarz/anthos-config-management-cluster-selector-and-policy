@@ -2,7 +2,7 @@
 kind: Cluster
 apiVersion: clusterregistry.k8s.io/v1alpha1
 metadata:
-  name: taiwan
+  name: hannover-dz
   labels:
     environment: prod
-    location: taiwan
+    location: hannover-dz
