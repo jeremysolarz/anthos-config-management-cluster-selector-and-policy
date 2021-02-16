@@ -3,7 +3,7 @@
 This example exhibits how to configure policy that applies only to resources in specific regions.
 We will create a RoleBinding named `Auditor` that only applies to clusters within a prescribed region.
 
-![locality-specific-policy](../screenshots/locality-specific-policy.svg)
+![locality-specific-policy](./screenshots/locality-specific-policy.svg)
 
 ## Contents
 
