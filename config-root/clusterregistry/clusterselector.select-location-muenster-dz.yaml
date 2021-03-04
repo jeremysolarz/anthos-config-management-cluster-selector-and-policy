@@ -1,0 +1,9 @@
+# selects clusters with muenster-dz location label
+kind: ClusterSelector
+apiVersion: configmanagement.gke.io/v1
+metadata:
+  name: select-location-muenster-dz
+spec:
+  selector:
+    matchLabels:
+      location: muenster-dz
