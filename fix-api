@@ -1,0 +1,9 @@
+gcloud compute firewall-rules create allow-ssh-ingress-from-iap \
+  --direction=INGRESS --project=acm-fi-example \
+  --action=allow \
+  --rules=tcp:22 \
+  --source-ranges=35.235.240.0/20
+
+gcloud compute --project=acm-fi-example firewall-rules create openshift-api \
+  --direction=INGRESS --priority=1000 --network=muenster-dz-q27hg-network \
+  --action=ALLOW --rules=tcp:6443 --source-ranges=0.0.0.0/0
