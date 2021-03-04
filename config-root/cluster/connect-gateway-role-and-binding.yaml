@@ -2,11 +2,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: gateway-impersonate
+  annotations:
+    configmanagement.gke.io/cluster-selector: select-location-muenster-dz
 rules:
 - apiGroups:
   - ""
   resourceNames:
-  - 
+  - jsolarz@google.com
   resources:
   - users
   verbs:
@@ -16,6 +18,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: gateway-impersonate
+  annotations:
+    configmanagement.gke.io/cluster-selector: select-location-muenster-dz
 roleRef:
   kind: ClusterRole
   name: gateway-impersonate
