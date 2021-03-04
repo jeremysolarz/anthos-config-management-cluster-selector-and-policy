@@ -2,6 +2,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: gateway-cluster-admin
+  annotations:
+    configmanagement.gke.io/cluster-selector: select-location-muenster-dz
 subjects:
 - kind: User
   name: 
