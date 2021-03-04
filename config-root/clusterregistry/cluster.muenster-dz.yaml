@@ -5,4 +5,4 @@ metadata:
   name: muenster-dz
   labels:
     environment: dev
-    location: frankfurt-dz
+    location: muenster-dz
