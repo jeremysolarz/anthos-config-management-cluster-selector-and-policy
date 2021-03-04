@@ -4,7 +4,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: auditor
   annotations:
-    configmanagement.gke.io/cluster-selector: select-location-frankfurt-dz
+    configmanagement.gke.io/cluster-selector: select-env-prod
 rules:
 - apiGroups: [""] # core API group
   resources: ["namespaces"]

@@ -4,7 +4,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: auditors
   annotations:
-    configmanagement.gke.io/cluster-selector: select-location-frankfurt-dz
+    configmanagement.gke.io/cluster-selector: select-env-prod
 subjects:
 - kind: User
   name: auditor@foo-corp.com
