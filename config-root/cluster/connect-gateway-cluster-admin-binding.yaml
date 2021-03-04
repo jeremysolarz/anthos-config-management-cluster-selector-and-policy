@@ -6,7 +6,7 @@ metadata:
     configmanagement.gke.io/cluster-selector: select-location-muenster-dz
 subjects:
 - kind: User
-  name: 
+  name: jsolarz@google.com
 roleRef:
   kind: ClusterRole
   name: cluster-admin
