@@ -1,3 +1,5 @@
 .DS_Store
 openshift-install
 kubeconfig-fi
+nomos-status-key.json
+oc-fix-priviledges-for-acm
